@@ -1,0 +1,68 @@
+{{ define "title" }}
+    {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}
+{{ end }}
+
+{{ define "main" }}
+    <section class="section-hero">
+        <div class="container">
+            <h1>{{ .Title }}</h1>
+            {{ if .IsHome }}
+            <p>{{ .Description }}</p>
+            <a href="/menu/" class="button primary">View Our Menu</a>
+            {{ else }}
+            <p>Browse our latest updates and delicious stories.</p>
+            {{ end }}
+        </div>
+    </section>
+
+    {{ if .IsHome }}
+    <section class="section-featured-products container">
+        <h2>Our Daily Fresh Bakes</h2>
+        <div class="product-grid">
+            <div class="product-item">
+                <h3>Artisan Sourdough</h3>
+                <p>Perfectly crusty, chewy interior.</p>
+            </div>
+            <div class="product-item">
+                <h3>Chocolate Croissant</h3>
+                <p>Buttery, flaky, and rich.</p>
+            </div>
+            <div class="product-item">
+                <h3>Blueberry Muffin</h3>
+                <p>Light, fluffy, and bursting with berries.</p>
+            </div>
+        </div>
+        <div class="text-center">
+             <a href="/menu/" class="button secondary">See All Products</a>
+        </div>
+    </section>
+
+    <section class="section-about-us container">
+        <h2>About Sweet Delights</h2>
+        <p>Sweet Delights Bakery has been serving the community with love and fresh ingredients since 20XX. We believe in traditional baking methods and a touch of modern creativity to bring you the best breads, pastries, and custom cakes.</p>
+        <a href="/about/" class="button outline">Learn More About Us</a>
+    </section>
+    {{ end }}
+
+    <section class="section-posts container">
+        {{ $pages := where .Site.RegularPages "Section" "posts" }}
+        {{ if .IsHome }}
+            <h2>Latest From Our Blog</h2>
+            {{ $pages = first 3 $pages }}
+        {{ else }}
+            <h2>{{ .Title }} Posts</h2>
+        {{ end }}
+
+        <div class="post-list">
+        {{ range $pages }}
+            <article class="post-item">
+                <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+                <p>{{ .Description | default (.Summary | plainify | truncate 150 ) }}</p>
+                <a href="{{ .Permalink }}" class="read-more">Read More &rarr;</a>
+            </article>
+        {{ end }}
+        </div>
+    </section>
+
+{{ end }}
